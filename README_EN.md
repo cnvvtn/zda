@@ -112,6 +112,7 @@ Default connection: 127.0.0.1:3306/zda
 ### 2. Inject Core Configurations
 
 The main project configuration is located at `app/config.yml`. For security, sensitive keys are dynamically read from the database:
+The public source only provides `app/config.example.yml`. Copy it to `app/config.yml` and fill in your local configuration. `prompt/`, `storage/`, `music/`, and `AGENTS.md` only keep example placeholders; real content is not published with the source code.
 
 ```yaml
 # Core keys that need to be configured in the database

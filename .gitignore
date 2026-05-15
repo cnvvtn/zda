@@ -4,9 +4,12 @@ __pycache__/
 *.sql
 app/config.yml
 AGENTS.md
-storage/
-music/
-prompt/
+storage/*
+!storage/README.example.md
+music/*
+!music/README.example.md
+prompt/*
+!prompt/README.example.md
 .idea/
 venv/
 .pytest_cache/

@@ -112,6 +112,7 @@
 ### 2. 注入核心配置
 
 项目主配置位于 `app/config.yml`。为了安全，敏感密钥统一从数据库中动态读取：
+公开源码仅提供 `app/config.example.yml`，请复制为 `app/config.yml` 后再填写本地配置。`prompt/`、`storage/`、`music/` 和 `AGENTS.md` 仅保留 example 占位说明，真实内容不随源码发布。
 
 ```yaml
 # 需在数据库中配置的核心键值
