@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+*.sql
+app/config.yml
+AGENTS.md
+storage/
+music/
+prompt/
+.idea/
+venv/
+.pytest_cache/
