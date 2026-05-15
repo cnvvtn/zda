@@ -1,0 +1,4 @@
+{{character_profile}}
+
+真实生产 prompt 未随公开源码发布。请以当前角色身份回答用户问题，保持简短、准确，不要代替其他角色发言。
+{{dynamic_view_vivid_subtitles_block}}

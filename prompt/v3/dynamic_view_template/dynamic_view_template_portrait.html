@@ -1,0 +1,1215 @@
+<!-- SPDX-License-Identifier: CC-BY-NC-ND-4.0 -->
+<!-- Copyright (c) 2026 知搭 ZDA -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>知搭 - 模块化科普动画骨架 - 竖屏互动版</title>
+    <style id="static-css">
+        /* ========================================================= */
+        /* [MODULE_2_THEME_START] 主体色与全局排版 */
+        /* ========================================================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            width: 100vw; height: 100vh; overflow: hidden;
+            background: #000; /* 视口外部留黑底 */
+            display: flex; justify-content: center; align-items: center;
+            font-family: sans-serif;
+        }
+
+        /* 强制 9:16 比例，居中显示 (Letterbox 模式) */
+        #app-container {
+            width: 100vw; max-width: calc(100vh * 9 / 16);
+            height: 100vh; max-height: calc(100vw * 16 / 9);
+            background: #111216; /* 稍微提亮一点黑底，适配暗黑气泡 */
+            display: flex; flex-direction: column; position: relative;
+            box-shadow: 0 0 2vw rgba(0, 0, 0, 0.8);
+        }
+
+        /* 舞台区占 75% */
+        #stage-area { height: 75%; width: 100%; position: relative; }
+        /* ========================================================= */
+        /* [MODULE_2_THEME_END] */
+
+        /* ========================================================= */
+        /* [MODULE_4_UI_START] 字幕与进度条 UI */
+        /* ========================================================= */
+        /* 字幕区占 25% */
+        #subtitle-area {
+            height: 25%; width: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 2% 4%; z-index: 10; text-align: center;
+            pointer-events: none;
+            user-select: none;
+            background: #111216;
+        }
+        .subtitle { width: 100%; transition: opacity 0.5s ease; }
+        #sub-cn-vivid { font-size: clamp(16px, 3vmin, 64px); color: #FFF; font-weight: bold; margin-bottom: 1.3%; }
+        #sub-cn-ext { font-size: clamp(14px, 2.5vmin, 54px); color: #999999; margin-bottom: 1%; line-height: 1.3; }
+        #sub-pro { font-size: clamp(12px, 2vmin, 44px); color: #BBB; font-style: italic; }
+        @supports (font-size: 1cqmin) {
+            #sub-cn-vivid { font-size: clamp(16px, 3cqmin, 64px); }
+            #sub-cn-ext { font-size: clamp(14px, 2.5cqmin, 54px); }
+            #sub-pro { font-size: clamp(12px, 2cqmin, 44px); }
+        }
+
+        /* 进度条 */
+        #progress-bar-container { position: absolute; bottom: 0; left: 0; z-index: 30; width: 100%; height: 1.2%; min-height: 4px; background: #222; }
+        #progress-bar { height: 100%; width: 0%; background: #00F0FF; transition: width 0.1s linear; box-shadow: 0 0 12px currentColor; }
+        /* ========================================================= */
+        /* [MODULE_4_UI_END] */
+
+        /* ========================================================= */
+        /* [MODULE_5_HUD_START] 全局底层操作与水印 (Flex布局版) */
+        /* ========================================================= */
+        #hud-layer {
+            position: absolute;
+            left: 10px;
+            right: 10px; /* 全局占满左右留边 */
+            bottom: 10px;
+            z-index: 100;
+            pointer-events: none; /* 让空白处点击能穿透到舞台 */
+        }
+
+        /* 消息列表：绝对定位于操作栏上方，不参与底部的 flex 居中计算 */
+        #message-list {
+            position: absolute;
+            bottom: 38px; /* 控制栏高度(30px) + 间距(8px) */
+            left: 0;
+            pointer-events: auto; /* 恢复点击接收 */
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 180px;
+            max-width: 50vw;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        /* 隐藏滚动条让视觉更干净 */
+        #message-list::-webkit-scrollbar { display: none; }
+        #message-list { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 消息气泡样式 */
+        .msg-bubble {
+            background: rgba(30, 30, 30, 0.85);
+            color: #ddd;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            line-height: 1.4;
+            align-self: flex-start;
+            word-break: break-all;
+            display: inline-block;
+            position: relative;
+            padding-right: 20px;
+            transition: opacity 0.8s ease;
+        }
+        .msg-bubble span.author {
+            color: #d19a66;
+            margin-right: 4px;
+            font-weight: bold;
+        }
+        .msg-bubble-dismiss {
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            width: 14px;
+            height: 14px;
+            border: 0;
+            padding: 0;
+            background: transparent;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 14px;
+        }
+
+        /* 关键组件：底部同一层容器，Flex 排布，左右分布且上下居中 */
+        #bottom-flex-layer {
+            pointer-events: auto;
+            display: flex;
+            justify-content: space-between; /* 分别在左和右 */
+            align-items: center; /* 保持上下居中对齐 */
+            width: 100%;
+            transition: opacity 0.8s ease;
+        }
+
+        /* 底部控制栏与输入框容器 (居左) */
+        #control-bar {
+            pointer-events: auto; /* 恢复点击接收 */
+            display: flex;
+            align-items: center;
+            background: rgba(40, 40, 40, 0.85);
+            border-radius: 12px;
+            padding: 3px 8px;
+            gap: 6px;
+            height: 30px; /* 固定高度，作为对齐的基准 */
+            width: 180px;
+            max-width: 50vw;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+        }
+
+        /* 播放控制按钮 */
+        .ctrl-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.1s;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .ctrl-btn:hover { color: #fff; transform: scale(1.1); }
+
+        /* 内部输入框包装器 */
+        #chat-input-wrapper {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 4px;
+        }
+
+        #chat-input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+            width: 100%;
+            font-size: 11px;
+        }
+        #chat-input::placeholder { color: #888; }
+
+        .icon-btn { cursor: pointer; opacity: 0.7; transition: opacity 0.2s; font-size: 13px;}
+        .icon-btn:hover { opacity: 1; }
+
+        /* 水印 (居右) */
+        #watermark {
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        #watermark .cn {
+            font-size: 12px;
+            font-weight: bold;
+            color: rgba(200, 200, 200, 0.7);
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        #watermark .en {
+            font-size: 8px;
+            font-weight: normal;
+            color: rgba(180, 180, 180, 0.5);
+            font-family: Arial, sans-serif;
+            margin-right: -0.65em; /* 抵消结尾留白居中 */
+            text-transform: uppercase;
+        }
+
+        /* --- 响应式适配 (移动端小屏优化) --- */
+        @media (max-width: 480px) {
+            #hud-layer { left: 5px; right: 5px; bottom: 8px; }
+            #message-list, #control-bar { width: 170px; max-width: 60vw; }
+            #message-list { max-height: 80px; }
+        }
+        @media (max-width: 320px) {
+            #message-list, #control-bar { width: 150px; max-width: 70vw; }
+        }
+        /* ========================================================= */
+        /* [MODULE_5_HUD_END] */
+
+        /* 状态重建时的全局静默：屏蔽一切 CSS 过渡与动画，防止跳转时出现残影滑动 */
+        .instant-rebuild * {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        /* 摄像机变换默认平滑过渡 */
+        #camera-matrix {
+            transform-origin: 0 0; /* 必须从0,0点计算，以配合我们的JS Translate */
+            will-change: transform;
+        }
+    </style>
+</head>
+<body>
+    <audio id="zda-background-audio" preload="auto" loop style="display:none" data-config-url=""></audio>
+    <audio id="zda-subtitle-audio" preload="auto" style="display:none" data-config-url=""></audio>
+
+    <div id="app-container" style="container-type: size;">
+
+        <div id="stage-area">
+            <svg id="main-svg" viewBox="0 0 1080 1920" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+                <defs id="svg-defs">
+                    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.3)" />
+                    </marker>
+                    <marker id="arrow-dynamic" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#00F0FF" />
+                    </marker>
+                </defs>
+
+                <g id="camera-matrix" style="transform: translate(0px, 0px) scale(1);">
+                    <g id="persistent-entities"></g>
+                    <g id="dynamic-entities"></g>
+                </g>
+            </svg>
+        </div>
+
+        <div id="subtitle-area">
+            <div id="sub-cn-vivid" class="subtitle vivid"></div>
+            <div id="sub-cn-ext" class="subtitle ext"></div>
+            <div id="sub-pro" class="subtitle sub"></div>
+        </div>
+
+        <div id="hud-layer">
+            <div id="message-list"></div>
+
+            <div id="bottom-flex-layer">
+                <div id="control-bar">
+                    <button class="ctrl-btn" id="btn-prev" title="上一幕">⏮</button>
+                    <button class="ctrl-btn" id="btn-play" title="暂停/播放">⏸</button>
+                    <button class="ctrl-btn" id="btn-next" title="下一幕">⏭</button>
+
+                    <div style="width: 1px; height: 16px; background: #555; margin: 0 4px;"></div>
+
+                    <div id="chat-input-wrapper">
+                        <span class="icon-btn">💬</span>
+                        <input type="text" id="chat-input" placeholder="说点什么...">
+<!--                        <span class="icon-btn">😃</span>-->
+                    </div>
+                </div>
+
+                <div id="watermark">
+                    <span class="cn">知搭</span>
+                    <span class="en">zda.cnvtn.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="progress-bar-container"><div id="progress-bar"></div></div>
+    </div>
+
+
+    <script id="module-js-engine">
+        // 解析查询参数
+        const urlParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+
+        // 默认显示字幕，除非明确传参 false 或 0
+        const showSubtitle = urlParams.get('showSubtitle') !== 'false';
+
+        // 默认显示操作栏和logo，除非明确传参 false 或 0
+        const showHUD = urlParams.get('showHUD') !== 'false';
+
+        // 默认播放全部，除非明确传参 true 或 1 仅播放第一幕
+        const firstSceneOnly = urlParams.get('firstSceneOnly') === 'true';
+
+        // 好莱坞级运镜控制
+        function setCamera(mathX, mathY, scale, duration = 1000) {
+            const cam = document.getElementById('camera-matrix');
+            const focusPt = mapCoords(mathX, mathY);
+            // 计算偏移量，使焦点移动到视口中心 (540, 960)
+            const centerX = 540;
+            const centerY = 960;
+            const translateX = centerX - (focusPt.x * scale);
+            const translateY = centerY - (focusPt.y * scale);
+
+            cam.style.transition = `transform ${duration}ms cubic-bezier(0.4, 0.0, 0.2, 1)`;
+            cam.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        function getPathD(points) {
+            if (!points || points.length === 0) return "";
+            return points.map((p, i) => {
+                const mapped = mapCoords(p.x, p.y);
+                return `${i === 0 ? 'M' : 'L'} ${mapped.x} ${mapped.y}`;
+            }).join(' ');
+        }
+
+        const SVG_NS = "http://www.w3.org/2000/svg";
+        const stageDyn = document.getElementById('dynamic-entities');
+        const stagePersist = document.getElementById('persistent-entities');
+
+        const CoordConfig = {
+            originX: 540,
+            originY: 1387,
+            scaleX: 105,
+            scaleY: 105
+        };
+
+        function mapCoords(mathX, mathY) {
+            return {
+                x: CoordConfig.originX + (mathX * CoordConfig.scaleX),
+                y: CoordConfig.originY - (mathY * CoordConfig.scaleY)
+            };
+        }
+
+        const entityRegistry = {};
+
+        function createElementWithDualLayer(mathX, mathY, animClass, innerSVGHTML, isPersistent, entityId = null) {
+            if (typeof isPersistent === 'string' && entityId === null) {
+                entityId = isPersistent;
+                isPersistent = false;
+            }
+
+            const mapped = mapCoords(mathX, mathY);
+
+            if (entityId && entityRegistry[entityId]) {
+                const outerG = entityRegistry[entityId];
+                outerG.style.transition = 'transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1)';
+                outerG.style.transform = `translate(${mapped.x}px, ${mapped.y}px)`;
+
+                const innerG = outerG.firstChild;
+                const currentClass = innerG.getAttribute('class') || '';
+                const newClass = animClass || '';
+
+                if (currentClass !== newClass) {
+                    innerG.setAttribute('class', '');
+                    void outerG.getBoundingClientRect();
+                    if (newClass) innerG.setAttribute('class', newClass);
+                }
+
+                return outerG;
+            }
+
+            const outerG = document.createElementNS(SVG_NS, 'g');
+            outerG.style.transition = 'none';
+            outerG.style.transform = `translate(${mapped.x}px, ${mapped.y}px)`;
+
+            const innerG = document.createElementNS(SVG_NS, 'g');
+            if (animClass) innerG.setAttribute('class', animClass);
+            innerG.innerHTML = innerSVGHTML;
+            outerG.appendChild(innerG);
+
+            if (isPersistent) {
+                stagePersist.appendChild(outerG);
+            } else {
+                stageDyn.appendChild(outerG);
+            }
+
+            if (entityId) {
+                entityRegistry[entityId] = outerG;
+            }
+            return outerG;
+        }
+
+        function removeElement(entityId) {
+            if (!entityRegistry[entityId]) return false;
+            const targetNode = entityRegistry[entityId];
+            if (targetNode.parentNode) {
+                targetNode.parentNode.removeChild(targetNode);
+            }
+            delete entityRegistry[entityId];
+            return true;
+        }
+
+        /**
+         * Scene reset function (硬切清屏)
+         * @param {boolean} preservePersistent - 是否保留 isPersistent=true 的实体
+         */
+        function clearScene(preservePersistent = true) {
+            // 1. 永远清空动态实体层
+            stageDyn.innerHTML = '';
+
+            // 2. 如果不保留持久化层，则一并清空
+            if (!preservePersistent) {
+                stagePersist.innerHTML = '';
+            }
+
+            // 3. 同步清理注册表中的内存引用
+            for (const id in entityRegistry) {
+                const node = entityRegistry[id];
+
+                if (!preservePersistent) {
+                    // 彻底清屏模式：无脑删除所有注册引用
+                    delete entityRegistry[id];
+                } else {
+                    // 保留持久化模式：仅删除属于动态层（或已脱离DOM树）的引用
+                    if (!node.parentNode || node.parentNode === stageDyn) {
+                        delete entityRegistry[id];
+                    }
+                }
+            }
+        }
+
+        function createPath(d, stroke, strokeWidth, extraClass="", isPersistent) {
+            const path = document.createElementNS(SVG_NS, 'path');
+            path.setAttribute('d', d);
+            path.setAttribute('stroke', stroke);
+            path.setAttribute('stroke-width', strokeWidth);
+            path.setAttribute('fill', 'none');
+            if(extraClass) path.setAttribute('class', extraClass);
+
+            if (isPersistent) {
+                stagePersist.appendChild(path);
+            } else {
+                stageDyn.appendChild(path);
+            }
+            return path;
+        }
+
+        // ==============================================================
+        // 动画队列调度逻辑 (替代 setTimeout)
+        // ==============================================================
+        let pendingAnimations = [];
+
+        function scheduleAnim(sequence) {
+            let accTime = 0;
+            sequence.forEach(step => {
+                accTime += step.delay;
+                pendingAnimations.push({
+                    triggerTime: accTime,
+                    task: step.task,
+                    executed: false
+                });
+            });
+        }
+
+        function clearPendingAnimations() {
+            pendingAnimations = [];
+        }
+
+
+        /* [MODULE_TIMELINE_START] */
+
+        /* [MODULE_TIMELINE_END] */
+        document.head.insertAdjacentHTML('beforeend', typeof dynamicCSS !== 'undefined' ? dynamicCSS : '');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var styleElement = document.getElementById('dynamic-css');
+            if (styleElement) {
+                var regex = /transform-origin\s*:\s*[^;]+;?/gi;
+                styleElement.innerHTML = styleElement.innerHTML.replace(regex, '');
+            }
+
+            // 应用参数控制的 UI 隐藏
+            if (!showSubtitle) {
+                const subArea = document.getElementById('subtitle-area');
+                if (subArea) subArea.style.display = 'none';
+            }
+            if (!showHUD) {
+                const hudLayer = document.getElementById('hud-layer');
+                if (hudLayer) hudLayer.style.display = 'none';
+            }
+        });
+
+        // 每幕 duration 由后端注入到 TimelineData。
+
+        // ==============================================================
+        // 游戏级主轴循环控制器 & 交互状态机
+        // ==============================================================
+        let currentSceneIndex = 0;
+        let sceneStartTime = 0;
+        let totalDuration = typeof TimelineData !== 'undefined' ? TimelineData.reduce((acc, cur) => acc + cur.duration, 0) : 0;
+        let globalStartTime = null;
+        let zdaTimelineStarted = false;
+        let zdaInitialFrameRendered = false;
+        let hasReportedFadeOut = false;
+        const AUDIO_FADE_OUT_LEAD_MS = 1800;
+
+        // 播放控制变量
+        let isPlaying = true;
+        let lastPauseTimestamp = 0;
+        let accumulatedPauseTime = 0;
+
+        const subVivid = document.getElementById('sub-cn-vivid');
+        const subExt = document.getElementById('sub-cn-ext');
+        const subSub = document.getElementById('sub-pro');
+        const progressBar = document.getElementById('progress-bar');
+        const SUBTITLE_FADE_MS = 250;
+        const subtitleFadeTimers = new WeakMap();
+
+        // 以淡入淡出方式替换单条字幕内容。
+        function setSubtitleHtmlWithFade(element, html) {
+            const nextHtml = html || "";
+            if (element.innerHTML === nextHtml) return;
+            const pendingTimer = subtitleFadeTimers.get(element);
+            if (pendingTimer) clearTimeout(pendingTimer);
+            if (!element.innerHTML) {
+                element.style.opacity = 0;
+                element.innerHTML = nextHtml;
+                requestAnimationFrame(() => {
+                    element.style.opacity = nextHtml ? 1 : 0;
+                });
+                return;
+            }
+            element.style.opacity = 0;
+            const timer = setTimeout(() => {
+                element.innerHTML = nextHtml;
+                element.style.opacity = nextHtml ? 1 : 0;
+                subtitleFadeTimers.delete(element);
+            }, SUBTITLE_FADE_MS);
+            subtitleFadeTimers.set(element, timer);
+        }
+
+        // 统一刷新三行字幕内容。
+        function updateSubtitles(texts) {
+            if (!texts) return;
+            const renderMath = (text) => text.replace(/\$(.*?)\$/g, (m, math) => window.katex ? katex.renderToString(math) : math);
+            setSubtitleHtmlWithFade(subVivid, texts.vivid || "");
+            setSubtitleHtmlWithFade(subExt, renderMath(texts.ext || ""));
+            setSubtitleHtmlWithFade(subSub, renderMath(texts.sub || ""));
+        }
+        // 执行render zda initial frame相关逻辑。
+        function renderZdaInitialFrame() {
+            if (typeof TimelineData === 'undefined' || !TimelineData || TimelineData.length === 0) return;
+            if (zdaInitialFrameRendered) return;
+            zdaInitialFrameRendered = true;
+            updateSubtitles(TimelineData[0].texts);
+            if(TimelineData[0].onEnter) TimelineData[0].onEnter(false);
+
+            progressBar.style.width = '0%';
+        }
+
+        /**
+         * 获取当前进度的小数形式（0.0 ~ 1.0）
+         */
+        function getProgressDecimal(sceneIndex, elapsedInScene) {
+            if (typeof TimelineData === 'undefined' || totalDuration <= 0) return 0;
+            let accumulatedPastDuration = 0;
+            for (let i = 0; i < sceneIndex; i++) {
+                accumulatedPastDuration += TimelineData[i].duration;
+            }
+            let progress = (accumulatedPastDuration + elapsedInScene) / totalDuration;
+            return progress > 1 ? 1 : progress < 0 ? 0 : progress;
+        }
+        let zdaAudioGestureRetryBound = false;
+        let zdaAudioPlayRequestId = 0;
+        let zdaBackgroundFadeFrame = 0;
+        const AUDIO_FADE_IN_MS = 1200;
+
+        // 执行get zda audio element相关逻辑。
+        function getZdaAudioElement(id) {
+            return document.getElementById(id);
+        }
+
+        // 执行resolve zda audio config url相关逻辑。
+        function resolveZdaAudioConfigUrl() {
+            const backgroundAudio = getZdaAudioElement('zda-background-audio');
+            const subtitleAudio = getZdaAudioElement('zda-subtitle-audio');
+            return (backgroundAudio && backgroundAudio.dataset.configUrl)
+                || (subtitleAudio && subtitleAudio.dataset.configUrl)
+                || "";
+        }
+
+        // 执行fetch zda audio config相关逻辑。
+        async function fetchZdaAudioConfig() {
+            const configUrl = resolveZdaAudioConfigUrl();
+            if (!configUrl) return null;
+            const response = await fetch(configUrl, { cache: 'no-store', credentials: 'same-origin' });
+            if (!response.ok) return null;
+            const payload = await response.json();
+            return payload.data || null;
+        }
+
+        // 执行normalize zda audio volume相关逻辑
+        function normalizeZdaAudioVolume(value) {
+            return Math.max(0, Math.min(1, (Number(value) || 0) / 100));
+        }
+
+        // 执行apply zda audio item相关逻辑
+        function applyZdaAudioItem(audio, item) {
+            if (!audio || !item || !item.src) return;
+            if (audio.getAttribute('src') !== item.src) {
+                audio.setAttribute('src', item.src);
+            }
+            audio.dataset.targetVolume = String(normalizeZdaAudioVolume(item.volume));
+        }
+
+        // 执行apply zda audio config相关逻辑
+        function applyZdaAudioConfig(config) {
+            if (!config) return;
+            applyZdaAudioItem(getZdaAudioElement('zda-background-audio'), config.background);
+            applyZdaAudioItem(getZdaAudioElement('zda-subtitle-audio'), config.subtitle);
+        }
+
+        // 执行wait zda audio ready相关逻辑。
+        function waitZdaAudioReady(audio) {
+            if (!audio || !audio.getAttribute('src')) return Promise.reject(new Error('音频地址缺失'));
+            if (audio.readyState >= 3) return Promise.resolve();
+            return new Promise((resolve, reject) => {
+                const cleanup = () => {
+                    audio.removeEventListener('canplay', handleReady);
+                    audio.removeEventListener('canplaythrough', handleReady);
+                    audio.removeEventListener('error', handleError);
+                };
+                const handleReady = () => {
+                    cleanup();
+                    resolve();
+                };
+                const handleError = () => {
+                    cleanup();
+                    reject(new Error('音频加载失败'));
+                };
+                audio.addEventListener('canplay', handleReady, { once: true });
+                audio.addEventListener('canplaythrough', handleReady, { once: true });
+                audio.addEventListener('error', handleError, { once: true });
+                audio.load();
+            });
+        }
+
+        // 执行prepare zda audio playback相关逻辑。
+        async function prepareZdaAudioPlayback() {
+            if (firstSceneOnly) return;
+            const requestId = ++zdaAudioPlayRequestId;
+            const config = await fetchZdaAudioConfig();
+            if (requestId !== zdaAudioPlayRequestId) return;
+            if (!config?.background?.src || !config?.subtitle?.src) throw new Error('音频配置缺失');
+            applyZdaAudioConfig(config);
+            await Promise.all([
+                waitZdaAudioReady(getZdaAudioElement('zda-background-audio')),
+                waitZdaAudioReady(getZdaAudioElement('zda-subtitle-audio')),
+            ]);
+        }
+
+        // 执行seek zda audio element相关逻辑
+        function seekZdaAudioElement(audio, targetSeconds) {
+            if (!audio) return;
+            const normalizedSeconds = Math.max(0, targetSeconds);
+            const seekToTarget = () => {
+                let nextSeconds = normalizedSeconds;
+                if (Number.isFinite(audio.duration) && audio.duration > 0) {
+                    nextSeconds = audio.loop
+                        ? normalizedSeconds % audio.duration
+                        : Math.min(normalizedSeconds, Math.max(0, audio.duration - 0.05));
+                }
+                audio.currentTime = nextSeconds;
+            };
+            if (audio.readyState === 0) {
+                audio.addEventListener('loadedmetadata', seekToTarget, { once: true });
+                return;
+            }
+            seekToTarget();
+        }
+
+        // 执行seek zda audio相关逻辑
+        function seekZdaAudio(progressValue) {
+            const progress = Math.max(0, Math.min(1, Number(progressValue) || 0));
+            const targetSeconds = (totalDuration * progress) / 1000;
+            [getZdaAudioElement('zda-background-audio'), getZdaAudioElement('zda-subtitle-audio')].forEach(audio => {
+                seekZdaAudioElement(audio, targetSeconds);
+            });
+        }
+
+        // 执行force align zda subtitle audio相关逻辑。
+        function forceAlignZdaSubtitleAudio(progressValue) {
+            const progress = Math.max(0, Math.min(1, Number(progressValue) || 0));
+            const targetSeconds = (totalDuration * progress) / 1000;
+            seekZdaAudioElement(getZdaAudioElement('zda-subtitle-audio'), targetSeconds);
+        }
+
+        // 执行bind zda audio gesture retry相关逻辑
+        function bindZdaAudioGestureRetry() {
+            if (zdaAudioGestureRetryBound) return;
+            zdaAudioGestureRetryBound = true;
+            const retry = () => {
+                zdaAudioGestureRetryBound = false;
+                const progress = globalStartTime ? getProgressDecimal(currentSceneIndex, performance.now() - accumulatedPauseTime - sceneStartTime) : 0;
+                zdaResumeAudio(progress)
+                    .then(() => {
+                        if (!zdaTimelineStarted && !globalStartTime) startZdaTimelineFrame();
+                    })
+                    .catch(bindZdaAudioGestureRetry);
+            };
+            document.addEventListener('click', retry, { once: true });
+            document.addEventListener('touchend', retry, { once: true });
+        }
+
+        // 执行cancel zda background fade相关逻辑
+        function cancelZdaBackgroundFade() {
+            if (!zdaBackgroundFadeFrame) return;
+            cancelAnimationFrame(zdaBackgroundFadeFrame);
+            zdaBackgroundFadeFrame = 0;
+        }
+
+        // 执行fade zda background volume相关逻辑
+        function fadeZdaBackgroundVolume(fromVolume, toVolume, durationMs, onComplete) {
+            const backgroundAudio = getZdaAudioElement('zda-background-audio');
+            if (!backgroundAudio) return;
+            cancelZdaBackgroundFade();
+            const startedAt = performance.now();
+            const tick = (timestamp) => {
+                const progress = Math.max(0, Math.min(1, (timestamp - startedAt) / durationMs));
+                backgroundAudio.volume = Math.max(0, Math.min(1, fromVolume + (toVolume - fromVolume) * progress));
+                if (progress < 1) {
+                    zdaBackgroundFadeFrame = requestAnimationFrame(tick);
+                    return;
+                }
+                zdaBackgroundFadeFrame = 0;
+                if (onComplete) onComplete();
+            };
+            backgroundAudio.volume = Math.max(0, Math.min(1, fromVolume));
+            zdaBackgroundFadeFrame = requestAnimationFrame(tick);
+        }
+
+        // 执行等待知搭音频开始播放相关逻辑。
+        function playZdaAudioUntilPlaying(audio) {
+            if (!audio || !audio.getAttribute('src')) return Promise.resolve();
+            return new Promise((resolve, reject) => {
+                let settled = false;
+                const cleanup = () => {
+                    audio.removeEventListener('playing', finish);
+                    audio.removeEventListener('error', fail);
+                };
+                const finish = () => {
+                    if (settled) return;
+                    settled = true;
+                    cleanup();
+                    resolve();
+                };
+                const fail = error => {
+                    if (settled) return;
+                    settled = true;
+                    cleanup();
+                    reject(error);
+                };
+                audio.addEventListener('playing', finish, { once: true });
+                audio.addEventListener('error', fail, { once: true });
+                const playPromise = audio.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.then(() => {
+                        if (!audio.paused && audio.readyState >= 3) finish();
+                    }).catch(fail);
+                    return;
+                }
+                if (!audio.paused && audio.readyState >= 3) finish();
+            });
+        }
+
+        // 执行play zda background audio element相关逻辑
+        function playZdaBackgroundAudioElement(audio) {
+            if (!audio || !audio.getAttribute('src')) return Promise.resolve();
+            const targetVolume = Math.max(0, Math.min(1, Number(audio.dataset.targetVolume) || 0));
+            audio.volume = 0;
+            return playZdaAudioUntilPlaying(audio)
+                .then(() => fadeZdaBackgroundVolume(0, targetVolume, AUDIO_FADE_IN_MS))
+                .catch(error => {
+                    bindZdaAudioGestureRetry();
+                    throw error;
+                });
+        }
+
+        // 执行play zda subtitle audio element相关逻辑
+        function playZdaSubtitleAudioElement(audio) {
+            if (!audio || !audio.getAttribute('src')) return Promise.resolve();
+            audio.volume = Math.max(0, Math.min(1, Number(audio.dataset.targetVolume) || 0));
+            return playZdaAudioUntilPlaying(audio).catch(error => {
+                bindZdaAudioGestureRetry();
+                throw error;
+            });
+        }
+
+        // 执行zda resume audio相关逻辑
+        async function zdaResumeAudio(progressValue) {
+            if (firstSceneOnly) {
+                zdaStopAudio();
+                return;
+            }
+            seekZdaAudio(progressValue);
+            try {
+                await Promise.all([
+                    playZdaBackgroundAudioElement(getZdaAudioElement('zda-background-audio')),
+                    playZdaSubtitleAudioElement(getZdaAudioElement('zda-subtitle-audio'))
+                ]);
+            } catch (error) {
+                cancelZdaBackgroundFade();
+                [getZdaAudioElement('zda-background-audio'), getZdaAudioElement('zda-subtitle-audio')].forEach(audio => {
+                    if (audio) audio.pause();
+                });
+                throw error;
+            }
+        }
+
+        // 执行zda pause audio相关逻辑
+        function zdaPauseAudio(progressValue) {
+            seekZdaAudio(progressValue);
+            cancelZdaBackgroundFade();
+            [getZdaAudioElement('zda-background-audio'), getZdaAudioElement('zda-subtitle-audio')].forEach(audio => {
+                if (audio) audio.pause();
+            });
+        }
+
+        // 执行zda fade out audio相关逻辑
+        function zdaFadeOutAudio() {
+            const backgroundAudio = getZdaAudioElement('zda-background-audio');
+            if (!backgroundAudio || backgroundAudio.paused) return;
+            fadeZdaBackgroundVolume(backgroundAudio.volume, 0, AUDIO_FADE_OUT_LEAD_MS);
+        }
+
+        // 执行zda stop audio相关逻辑
+        function zdaStopAudio() {
+            cancelZdaBackgroundFade();
+            [getZdaAudioElement('zda-background-audio'), getZdaAudioElement('zda-subtitle-audio')].forEach(audio => {
+                if (!audio) return;
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        }
+
+        // --- 交互事件监听 ---
+        const msgList = document.getElementById('message-list');
+        const chatInput = document.getElementById('chat-input');
+        const btnPlay = document.getElementById('btn-play');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const bottomFlexLayer = document.getElementById('bottom-flex-layer');
+        const ZDA_MESSAGE_STORAGE_KEY = `zda-message-list:${location.pathname}`;
+        let zdaMessageFadeTimer = 0;
+        let zdaBottomFlexFadeTimer = 0;
+
+        // 执行schedule zda message list fade相关逻辑。
+        function scheduleZdaMessageListFade() {
+            clearTimeout(zdaMessageFadeTimer);
+            zdaMessageFadeTimer = setTimeout(() => {
+                Array.from(msgList.children).forEach(messageElement => {
+                    messageElement.style.opacity = '0.3';
+                });
+            }, 5000);
+        }
+
+        // 执行schedule zda bottom flex layer fade相关逻辑。
+        function scheduleZdaBottomFlexLayerFade() {
+            clearTimeout(zdaBottomFlexFadeTimer);
+            zdaBottomFlexFadeTimer = setTimeout(() => {
+                bottomFlexLayer.style.opacity = '0.3';
+            }, 5000);
+        }
+
+        // 执行restore zda bottom flex layer相关逻辑。
+        function restoreZdaBottomFlexLayer() {
+            bottomFlexLayer.style.opacity = '1';
+            scheduleZdaBottomFlexLayerFade();
+        }
+
+        // 执行persist zda message list相关逻辑。
+        function persistZdaMessageList() {
+            const records = Array.from(msgList.querySelectorAll('.msg-bubble')).map(messageElement => ({
+                author: messageElement.dataset.author || '',
+                text: messageElement.dataset.text || ''
+            }));
+            sessionStorage.setItem(ZDA_MESSAGE_STORAGE_KEY, JSON.stringify(records));
+        }
+
+        // 执行create zda message bubble相关逻辑。
+        function createZdaMessageBubble(authorText, messageText) {
+            const messageElement = document.createElement('div');
+            const author = document.createElement('span');
+            const dismissButton = document.createElement('button');
+            messageElement.className = 'msg-bubble';
+            messageElement.dataset.author = authorText;
+            messageElement.dataset.text = messageText;
+            messageElement.style.opacity = '1';
+            author.className = 'author';
+            author.textContent = authorText;
+            dismissButton.className = 'msg-bubble-dismiss';
+            dismissButton.type = 'button';
+            dismissButton.textContent = '×';
+            dismissButton.addEventListener('click', event => {
+                event.stopPropagation();
+                messageElement.style.opacity = '0.3';
+            });
+            messageElement.append(author, messageText, dismissButton);
+            return messageElement;
+        }
+
+        // 执行append zda message bubble相关逻辑。
+        function appendZdaMessageBubble(messageElement, shouldPersist = true) {
+            msgList.append(messageElement);
+            msgList.scrollTop = msgList.scrollHeight;
+            if(msgList.children.length > 20) {
+                msgList.removeChild(msgList.firstChild);
+            }
+            if (shouldPersist) persistZdaMessageList();
+            scheduleZdaMessageListFade();
+        }
+
+        // 执行restore zda message list相关逻辑。
+        function restoreZdaMessageList() {
+            const records = JSON.parse(sessionStorage.getItem(ZDA_MESSAGE_STORAGE_KEY) || '[]');
+            if (!Array.isArray(records)) return;
+            records.forEach(record => {
+                appendZdaMessageBubble(createZdaMessageBubble(record.author || '', record.text || ''), false);
+            });
+        }
+
+        // 执行load zda html2canvas相关逻辑。
+        async function loadZdaHtml2Canvas() {
+            if (window.html2canvas) return window.html2canvas;
+            await new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+            return window.html2canvas;
+        }
+
+        // 执行request zda timeline llm answer相关逻辑。
+        async function requestZdaTimelineLlmAnswer(inputText) {
+            const stageArea = document.getElementById('stage-area');
+            const currentTexts = TimelineData[currentSceneIndex]?.texts || {};
+            const html2canvas = await loadZdaHtml2Canvas();
+            const rect = stageArea.getBoundingClientRect();
+            const canvas = await html2canvas(document.body, {
+                backgroundColor: getComputedStyle(document.getElementById('app-container')).backgroundColor,
+                useCORS: true,
+                scale: Math.min(2, window.devicePixelRatio || 1),
+                logging: false,
+                windowWidth: window.innerWidth,
+                windowHeight: window.innerHeight,
+                scrollX: window.scrollX,
+                scrollY: window.scrollY,
+                x: rect.left + window.scrollX,
+                y: rect.top + window.scrollY,
+                width: Math.ceil(rect.width),
+                height: Math.ceil(rect.height)
+            });
+            const imageBlob = await new Promise(resolve => {
+                canvas.toBlob(resolve, 'image/webp', 0.72);
+            });
+            const formData = new FormData();
+            formData.append('image', imageBlob, 'stage.webp');
+            formData.append('vivid', currentTexts.vivid || '');
+            formData.append('ext', currentTexts.ext || '');
+            formData.append('en', currentTexts.sub || '');
+            formData.append('user_input', inputText);
+            const response = await fetch('/api/dynamic-view/knowledge-qa', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            const answerText = result.data?.answer || result.msg || '回答失败';
+            appendZdaMessageBubble(createZdaMessageBubble('zda:', answerText));
+        }
+
+        msgList.addEventListener('click', () => {
+            Array.from(msgList.children).forEach(messageElement => {
+                messageElement.style.opacity = '1';
+            });
+            scheduleZdaMessageListFade();
+        });
+
+        bottomFlexLayer.addEventListener('click', restoreZdaBottomFlexLayer);
+        restoreZdaBottomFlexLayer();
+        restoreZdaMessageList();
+
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                const inputText = this.value.trim();
+
+                // 使用append将消息插入到底部。
+                appendZdaMessageBubble(createZdaMessageBubble('hi:', inputText));
+                // 请求当前画面的知识问答。
+                requestZdaTimelineLlmAnswer(inputText).catch(() => {
+                    appendZdaMessageBubble(createZdaMessageBubble('zda:', '回答失败'));
+                });
+                this.value = '';
+            }
+        });
+
+        // 强制恢复播放状态 (用于快进快退)
+        function forcePlay() {
+            if (!isPlaying) {
+                isPlaying = true;
+                btnPlay.innerText = '⏸';
+                // 补偿暂停流失的时间，防止跳变
+                accumulatedPauseTime += performance.now() - lastPauseTimestamp;
+            }
+        }
+
+        btnPlay.addEventListener('click', () => {
+            if (isPlaying) {
+                isPlaying = false;
+                btnPlay.innerText = '▶️';
+                const activeTimestamp = performance.now() - accumulatedPauseTime;
+                const sceneElapsed = activeTimestamp - sceneStartTime;
+                const progress = getProgressDecimal(currentSceneIndex, sceneElapsed);
+                zdaPauseAudio(progress);
+                lastPauseTimestamp = performance.now();
+                return;
+            }
+            const pausedDuration = performance.now() - lastPauseTimestamp;
+            const activeTimestamp = performance.now() - accumulatedPauseTime - pausedDuration;
+            const sceneElapsed = activeTimestamp - sceneStartTime;
+            const progress = getProgressDecimal(currentSceneIndex, sceneElapsed);
+            zdaResumeAudio(progress).then(() => {
+                accumulatedPauseTime += performance.now() - lastPauseTimestamp;
+                isPlaying = true;
+                btnPlay.innerText = '⏸';
+            }).catch(() => {
+                isPlaying = false;
+                btnPlay.innerText = '▶️';
+            });
+        });
+        /**
+         * 核心场控调度：处理顺播与快进快退
+         * @param {number} newIndex 目标幕索引
+         * @param {number} activeTimestamp 当前激活的时间戳
+         * @param {boolean} isSeek 是否是强行跳转（快进/快退）
+         */
+        function switchScene(newIndex, activeTimestamp, isSeek = false) {
+            forcePlay();
+
+            if (isSeek) {
+                // 【状态瞬间重建引擎】
+                document.body.classList.add('instant-rebuild');
+
+                stageDyn.innerHTML = '';
+                stagePersist.innerHTML = '';
+                for (const id in entityRegistry) delete entityRegistry[id];
+                pendingAnimations = [];
+
+                const cam = document.getElementById('camera-matrix');
+                cam.style.transform = `translate(0px, 0px) scale(1)`;
+
+                for (let i = 0; i <= newIndex; i++) {
+                    currentSceneIndex = i;
+
+                    if (TimelineData[i] && TimelineData[i].onEnter) {
+                        TimelineData[i].onEnter(i < newIndex);
+                    }
+
+                    if (i < newIndex) {
+                        pendingAnimations.forEach(anim => anim.task());
+                        pendingAnimations = [];
+
+                        stageDyn.innerHTML = '';
+                        const keys = Object.keys(entityRegistry);
+                        for (let k = 0; k < keys.length; k++) {
+                            const id = keys[k];
+                            if (!entityRegistry[id].parentNode || entityRegistry[id].parentNode === stageDyn) {
+                                delete entityRegistry[id];
+                            }
+                        }
+                    }
+                }
+
+                currentSceneIndex = newIndex;
+                sceneStartTime = activeTimestamp;
+                updateSubtitles(TimelineData[currentSceneIndex].texts);
+
+                void document.body.offsetHeight;
+                document.body.classList.remove('instant-rebuild');
+
+            } else {
+                clearScene(true);
+                clearPendingAnimations();
+
+                currentSceneIndex = newIndex;
+                sceneStartTime = activeTimestamp;
+
+                updateSubtitles(TimelineData[currentSceneIndex].texts);
+                if(TimelineData[currentSceneIndex].onEnter) TimelineData[currentSceneIndex].onEnter(false);
+            }
+            if (newIndex === 1) forceAlignZdaSubtitleAudio(getProgressDecimal(newIndex, 0));
+        }
+
+        btnPrev.addEventListener('click', () => {
+            if (typeof TimelineData === 'undefined' || !TimelineData || TimelineData.length === 0) return;
+            if (currentSceneIndex > 0) {
+                switchScene(currentSceneIndex - 1, performance.now() - accumulatedPauseTime, true);
+                const progress = getProgressDecimal(currentSceneIndex, 0);
+                zdaResumeAudio(progress);
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            if (typeof TimelineData === 'undefined' || !TimelineData || TimelineData.length === 0) return;
+            if (currentSceneIndex < TimelineData.length - 1) {
+                switchScene(currentSceneIndex + 1, performance.now() - accumulatedPauseTime, true);
+                const progress = getProgressDecimal(currentSceneIndex, 0);
+                zdaResumeAudio(progress);
+            }
+        });
+        function MainLoop(timestamp) {
+            if (typeof TimelineData === 'undefined' || !TimelineData || TimelineData.length === 0) return;
+
+            // 初始化拦截逻辑
+            if (!globalStartTime) {
+                globalStartTime = timestamp;
+                sceneStartTime = timestamp;
+                renderZdaInitialFrame();
+            }
+
+            // 暂停状态下只进行空循环
+            if (!isPlaying) {
+                requestAnimationFrame(MainLoop);
+                return;
+            }
+
+            // 扣除掉总计处于暂停状态的时长。
+            const activeTimestamp = timestamp - accumulatedPauseTime;
+            const sceneElapsed = activeTimestamp - sceneStartTime;
+            const currentScene = TimelineData[currentSceneIndex];
+
+            // 执行到达时间的动画序列。
+            pendingAnimations.forEach(anim => {
+                if (!anim.executed && sceneElapsed >= anim.triggerTime) {
+                    anim.task();
+                    anim.executed = true;
+                }
+            });
+
+            const progress = getProgressDecimal(currentSceneIndex, sceneElapsed);
+            const progressPercent = progress * 100;
+            progressBar.style.width = (progress * 100) + '%';
+
+            // 检查是否接近渲染末尾，上报 FADE OUT。
+            const isEndScene = firstSceneOnly ? (currentSceneIndex === 0) : (currentSceneIndex === TimelineData.length - 1);
+            const remainingMs = firstSceneOnly
+                ? Math.max(0, currentScene.duration - sceneElapsed)
+                : totalDuration * (1 - progress);
+            const isNearEnd = remainingMs <= AUDIO_FADE_OUT_LEAD_MS;
+
+            if (isEndScene && isNearEnd && !hasReportedFadeOut) {
+                zdaFadeOutAudio();
+                hasReportedFadeOut = true;
+            }
+
+            // 判断当前幕是否播放完毕。
+            if (sceneElapsed >= currentScene.duration) {
+                if (firstSceneOnly && currentSceneIndex === 0) {
+                    zdaStopAudio();
+                    return;
+                }
+
+                if (currentSceneIndex < TimelineData.length - 1) {
+                    switchScene(currentSceneIndex + 1, activeTimestamp, false);
+                } else if (progressPercent >= 100) {
+                    zdaStopAudio();
+                    return;
+                }
+            }
+
+            requestAnimationFrame(MainLoop);
+        }
+        // 执行start zda timeline frame相关逻辑。
+        function startZdaTimelineFrame() {
+            if (zdaTimelineStarted) return;
+            zdaTimelineStarted = true;
+            requestAnimationFrame(MainLoop);
+        }
+
+        // 执行start zda timeline playback相关逻辑。
+        async function startZdaTimelinePlayback() {
+            await prepareZdaAudioPlayback();
+            if (!firstSceneOnly) await zdaResumeAudio(0);
+            startZdaTimelineFrame();
+        }
+
+        window.onload = () => {
+            const svgDefs = document.getElementById('svg-defs');
+            if (typeof SVG_ASSETS !== 'undefined') {
+                if (SVG_ASSETS.DEFS) svgDefs.innerHTML += SVG_ASSETS.DEFS;
+                if (SVG_ASSETS.defs) svgDefs.innerHTML += SVG_ASSETS.defs;
+            }
+            startZdaTimelinePlayback().catch(() => {});
+        };
+    </script>
+</body>
+</html>

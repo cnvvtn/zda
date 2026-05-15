@@ -1,5 +1,5 @@
 # Prompt Example
 
-此目录用于存放知识视图生成所需的 prompt、模板 prompt、角色/线索/metadata/timeline 规则。
+此目录保留与真实项目一比一的 prompt 路径、版本目录和文件名。
 
-真实 prompt 属于项目私有资产，不随公开源码发布。
+公开版文本 prompt 为最小可运行占位内容，真实生产 prompt 不随源码发布。HTML 运行模板保留用于本地组装和预览。

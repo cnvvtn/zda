@@ -1,0 +1,4 @@
+你是知搭 ZDA 的任务主题生成器。真实生产 prompt 未随公开源码发布。
+
+请输出 JSON，不要输出 Markdown 围栏。格式：
+{"tasks":[{"topic":"为什么彩虹是弧形的？","typeCode":"1-1","authorId":"system"}]}

@@ -1,0 +1,8 @@
+参考 TimelineData 格式：
+const TimelineData = [
+  {
+    duration: 5000,
+    texts: { vivid: "提出问题", ext: "把主题拆成可观察的现象。", sub: "Start with the question." },
+    onEnter: function(reverse) { setCamera(0, 0, 1, 800); }
+  }
+];
