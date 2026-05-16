@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1 style="font-size: 2.5em; font-weight: bold;"><img src="https://lib.cnvtn.com/zda/android_logo.png" alt="知搭 Logo" width="42" align="center" /> 知搭 (ZDA)</h1>
+<h1 style="font-size: 2.5em; font-weight: bold;"><img src="https://lib.cnvtn.com/zda/logo_tra.png" alt="知搭 Logo" width="42" align="center" /> 知搭 (ZDA)</h1>
 
 <p style="font-size: 1.2em; font-weight: 500; margin-top: 10px;">
   <b>把转瞬即逝的念头，渲染成触手可及的知识。</b>
@@ -25,7 +25,8 @@
   <a href="#-重新定义知识获取">特性一览</a> ·
   <a href="#-降维打击信息过载">痛点破局</a> ·
   <a href="#-极速本地引擎">本地部署</a> ·
-  <a href="#-核心架构概览">核心架构</a>
+  <a href="#-技术框架引导">技术框架</a> ·
+  <a href="#-核心架构与-api-概览">核心架构</a>
 </p>
 
 </div>
@@ -86,13 +87,52 @@
 
 它天生适合以下场景：**零基础解释新概念**、**拆解硬核科学机制**、**盘点历史因果链**、**分步图解技术原理**。
 
-| 模块示例 | 体验直达 | 形态说明                       |
-| :--- | :--- |:---------------------------|
-| **横屏视图模板** | [预览模板](https://zda.cnvtn.com/templates/landscape.html) | 知识视图的底层核心 HTML 驱动模板。       |
-| **标准视图播放** | [观看 Demo](https://zda.cnvtn.com/view/knowledge-demo) | 渲染完成后的标准知识播放页，带交互控件。       |
-| **沉浸式全屏** | [全屏 Demo](https://zda.cnvtn.com/view/knowledge-demo/fullscreen) | 剥离多余 UI，带来接近短片的沉浸观看体验。     |
-| **录制与导出** | [录制 Demo](https://zda.cnvtn.com/record/knowledge-demo) | 一键将知识视图渲染并录制为 MP4 视频格式。    |
-| **Open API** | [接口文档](https://zda.cnvtn.com/docs) | 开发者专区：生成任务、播放、支付、认证等接口全开放。 |
+<table>
+  <tr>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-01.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-01.mp4"><b>熵增定律（物理学）</b></a>
+      <br><span>理解为什么封闭系统总是走向更高无序度。</span>
+    </td>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-02.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-02.mp4"><b>欧拉公式（数学）</b></a>
+      <br><span>用动态视图串起指数、三角函数与复数关系。</span>
+    </td>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-03.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-03.mp4"><b>冒泡排序（计算机科学）</b></a>
+      <br><span>逐步展示比较、交换和排序收敛的全过程。</span>
+    </td>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-04.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-04.mp4"><b>可供性（设计学）</b></a>
+      <br><span>解释物体如何通过形态暗示用户操作方式。</span>
+    </td>
+  </tr>
+  <tr>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-05.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-05.mp4"><b>黑洞（天文学）</b></a>
+      <br><span>从引力、逃逸速度和事件视界理解黑洞。</span>
+    </td>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-06.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-06.mp4"><b>A* 搜索算法（人工智能）</b></a>
+      <br><span>拆解启发式估价如何帮助路径搜索提速。</span>
+    </td>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-07.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-07.mp4"><b>拜占庭将军问题</b></a>
+      <br><span>用协同决策故事解释分布式共识难题。</span>
+    </td>
+    <td width="306" align="center" valign="top">
+      <video src="assets/videos/knowledge-view-08.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
+      <br><a href="assets/videos/knowledge-view-08.mp4"><b>拖延心理学</b></a>
+      <br><span>解释拖延如何制造压力循环和心理负担。</span>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -111,8 +151,7 @@
 
 ### 2. 注入核心配置
 
-项目主配置位于 `app/config.yml`。为了安全，敏感密钥统一从数据库中动态读取：
-公开源码仅提供 `app/config.example.yml`，请复制为 `app/config.yml` 后再填写本地配置。`prompt/`、`storage/`、`music/` 和 `AGENTS.md` 仅保留 example 占位说明，真实内容不随源码发布。
+项目主配置位于 `app/config.yml`。<br>为了安全，敏感密钥统一从数据库中动态读取：
 
 ```yaml
 # 需在数据库中配置的核心键值
@@ -167,6 +206,62 @@ curl [http://127.0.0.1:5000/health](http://127.0.0.1:5000/health)
 
 ---
 
+## 🧭 技术框架引导
+
+如果你不是只想“跑起来”，而是想快速理解知搭如何把模型、支付、推荐和生成链路串成一套产品，可以先从后端入口看起。项目基于 FastAPI、SQLAlchemy、MySQL 和 Pydantic 构建，`app/main.py` 负责应用生命周期、路由挂载与定时任务，`app/db/models.py` 维护核心表结构映射，`app/config.yml` 则给出本地运行时配置示例。
+
+模型推荐与模型档位不是硬编码在前端里，而是由 `dynamic_view_model_profile` 这类运行时配置驱动，再通过 `/api/website/generation-models` 下发给页面。你可以把 `experience`、`basic`、`advanced`、`top` 理解为不同质量与成本的生成入口，每个档位都可以绑定不同模型、节点、价格与 Credit 消耗。
+
+动态视图的主生成链路集中在 `/api/dynamic-view` 和 `app/features/dynamic_view/` 下。一次生成会被拆成主题审查、分镜脚本、HTML 组装、TTS 音频、存档与播放等阶段；前端可以轮询进度，也可以取消任务，失败或取消时会按生成状态返还对应 Credit。
+
+支付侧已经内置 ZPAY 接入能力，入口在 `/api/payments` 与 `app/services/zpay_payment_service.py`。这条链路覆盖创建订单、订单查询、异步通知验签、通知限流、MySQL 分布式锁和会员权益发放，适合直接接到套餐购买或算力充值场景。
+
+Credit 是知搭内部的算力结算单位，由 `app/services/credit_service.py` 统一处理。每日赠送、支付充值、兑换码、生成扣费、失败退款和过期清算都会落到账本里，方便追踪每一次模型调用到底消耗了多少额度。
+
+官网内容推荐和展示调度分别由 `website_topic_batch_service` 与 `website_universe_service` 承担。后台会定时生成推荐话题、刷新官网主题批次，并按动态视图分类重算“大观”展示数据，让首页内容保持更新。
+
+实时互动部分走 MQTT 与 `/api/chat`，用于讨论区初始化、会话管理、消息推送和弹幕式互动。不同环境可以通过 `mqtt.topic_prefix` 做主题隔离，避免开发、测试和线上消息互相污染。
+
+### 模型配置建议
+
+模型能力不写死在代码中，而是由数据库中的 `dynamic_view_model_profile` 动态控制。建议至少准备以下节点：
+
+| 节点 | 典型职责 | 推荐配置思路 |
+| :--- | :--- | :--- |
+| `node1` | 主题理解、内容结构、主脚本生成 | 放置稳定、推理能力强的文本模型，优先保证结构化输出质量。 |
+| `node2` | HTML/动画片段生成 | 放置代码能力更强的模型，用于把分镜转成可播放视图。 |
+| `analyze` | 题目审查与意图分析 | 可使用成本较低但响应稳定的模型，降低前置判断成本。 |
+| `metadata` | 摘要、标题、标签等轻量信息 | 适合配置低成本模型，提升整体吞吐。 |
+| `tts` | 语音合成 | 当前链路预留 DashScope TTS 配置，按业务需要替换或扩展。 |
+
+### 支付与权益配置
+
+ZPAY 默认处于关闭状态，正式接入前请在 `app/config.yml` 与数据库密钥中补齐：
+
+```yaml
+zpay:
+  enabled: true
+  pid: "你的 ZPAY 商户 ID"
+  gateway: "你的 ZPAY 网关地址"
+  public_api_base_url: "你的公网 API 地址"
+  plan_catalog:
+    experience:
+      name: 轻量补给
+      money: "5.00"
+      days: 1
+      credit_total: 160
+      model_level: experience
+      priority_level: 1
+```
+
+```text
+runtime_secrets.ZPAY_KEY: "你的 ZPAY 商户密钥"
+```
+
+推荐先用低金额套餐跑通“创建订单 -> 支付回调 -> 验签入账 -> Credit 发放 -> 模型扣费”全链路，再逐步开放更高模型档位。
+
+---
+
 ## 🔌 核心架构与 API 概览
 
 系统按业务模块进行了清晰的微服务化路由拆分：
@@ -209,6 +304,6 @@ curl [http://127.0.0.1:5000/health](http://127.0.0.1:5000/health)
 
 在这个信息过载的时代，和我们一起重塑知识的形态。
 
-* **📧 商务与合作**：`your-email@example.com`
+* **📧 商务与合作**：`cnvtn@cnvtn.com`
 * **🐛 漏洞与建议**：欢迎在 [GitHub Issues](https://www.google.com/search?q=%23) 中提交反馈
-* **💬 开发者社区**：[点击扫码加入交流群](https://www.google.com/search?q=%23)
+* **💬 开发者社区**：[点击扫码加入交流群](https://lib.cnvtn.com/zda/wx.jpg)
