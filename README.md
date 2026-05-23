@@ -90,8 +90,8 @@
 <table>
   <tr>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="编译原理知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>编译原理（技术系统原理）</b></a>
+      <a href="https://www.bilibili.com/video/BV1asLK65Ect/"><img src="https://i2.hdslb.com/bfs/archive/16f9b8fd21d59ef96212e910de9ac3c31fbe0785.jpg@308w_174h" alt="编译原理知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1asLK65Ect/"><b>编译原理（技术系统原理）</b></a>
       <br><span>解析编译器如何将高级语言翻译为机器码，涵盖词法、语法、语义分析及代码优化全流程。</span>
     </td>
     <td width="306" align="center" valign="top">
