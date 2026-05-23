@@ -306,4 +306,6 @@ runtime_secrets.ZPAY_KEY: "你的 ZPAY 商户密钥"
 
 * **📧 商务与合作**：`cnvtn@cnvtn.com`
 * **🐛 漏洞与建议**：欢迎在 [GitHub Issues](https://www.google.com/search?q=%23) 中提交反馈
-* **💬 开发者社区**：[点击扫码加入交流群](https://lib.cnvtn.com/zda/wx.jpg)
+* **💬 开发者社区**：
+
+  <img src="assets/images/wechat-group.jpg" alt="知搭开发者交流群二维码" width="220" />

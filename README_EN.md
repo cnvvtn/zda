@@ -306,4 +306,6 @@ In this age of information overload, join us in reshaping the form of knowledge.
 
 * **📧 Business and partnerships**: `cnvtn@cnvtn.com`
 * **🐛 Bugs and suggestions**: Feedback is welcome through [GitHub Issues](https://www.google.com/search?q=%23)
-* **💬 Developer community**: [Scan the QR code to join the group](https://lib.cnvtn.com/zda/wx.jpg)
+* **💬 Developer community**:
+
+  <img src="assets/images/wechat-group.jpg" alt="ZDA developer community QR code" width="220" />
