@@ -1,6 +1,0 @@
--- SPDX-License-Identifier: CC-BY-NC-ND-4.0
--- Copyright (c) 2026 知搭 ZDA
--- 文件说明：zda.sql，公开版数据库占位文件。
---
--- 真实数据库 SQL 不随公开源码发布。
--- 请根据 app/db/models.py 自行创建 MySQL 8.0 数据库表结构。

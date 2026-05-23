@@ -90,45 +90,45 @@
 <table>
   <tr>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-01.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-01.mp4"><b>熵增定律（物理学）</b></a>
-      <br><span>理解为什么封闭系统总是走向更高无序度。</span>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="编译原理知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>编译原理（技术系统原理）</b></a>
+      <br><span>解析编译器如何将高级语言翻译为机器码，涵盖词法、语法、语义分析及代码优化全流程。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-02.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-02.mp4"><b>欧拉公式（数学）</b></a>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="欧拉公式知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>欧拉公式（数学）</b></a>
       <br><span>用动态视图串起指数、三角函数与复数关系。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-03.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-03.mp4"><b>冒泡排序（计算机科学）</b></a>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="冒泡排序知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>冒泡排序（计算机科学）</b></a>
       <br><span>逐步展示比较、交换和排序收敛的全过程。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-04.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-04.mp4"><b>可供性（设计学）</b></a>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="可供性知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>可供性（设计学）</b></a>
       <br><span>解释物体如何通过形态暗示用户操作方式。</span>
     </td>
   </tr>
   <tr>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-05.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-05.mp4"><b>黑洞（天文学）</b></a>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="黑洞知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>黑洞（天文学）</b></a>
       <br><span>从引力、逃逸速度和事件视界理解黑洞。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-06.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-06.mp4"><b>A* 搜索算法（人工智能）</b></a>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="A* 搜索算法知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>A* 搜索算法（人工智能）</b></a>
       <br><span>拆解启发式估价如何帮助路径搜索提速。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-07.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-07.mp4"><b>拜占庭将军问题</b></a>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="拜占庭将军问题知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>拜占庭将军问题</b></a>
       <br><span>用协同决策故事解释分布式共识难题。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <video src="assets/videos/knowledge-view-08.mp4" width="292" height="164" controls muted playsinline preload="metadata"></video>
-      <br><a href="assets/videos/knowledge-view-08.mp4"><b>拖延心理学</b></a>
+      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="拖延心理学知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://zda.cnvtn.com"><b>拖延心理学</b></a>
       <br><span>解释拖延如何制造压力循环和心理负担。</span>
     </td>
   </tr>
