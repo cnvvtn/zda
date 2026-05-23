@@ -3,11 +3,11 @@
 <h1 style="font-size: 2.5em; font-weight: bold;"><img src="https://lib.cnvtn.com/zda/logo_tra.png" alt="知搭 Logo" width="42" align="center" /> 知搭 (ZDA)</h1>
 
 <p style="font-size: 1.2em; font-weight: 500; margin-top: 10px;">
-  <b>把转瞬即逝的念头，渲染成触手可及的知识。</b>
+  <b>把转瞬即逝的念头，渲染成一个微电影大片。</b>
 </p>
 
 别再搜寻碎片，别再忍受干瘪的 AI 长文，也别再被枯燥的 PPT 模板困住。<br>
-知搭只专注一件事：**让知识自己长出画面、节奏和字幕，演化成一条可以被「观看」的动态链路。**
+我们只专注一件事：**让知识自己长出画面、节奏和字幕，演化成一条可以被「观看」的动态链路。**
 
 <p style="margin-top: 15px;">
   <img alt="AI Knowledge View" src="https://img.shields.io/badge/AI-Knowledge%20VIEW-7C3AED?style=for-the-badge">
