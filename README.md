@@ -90,46 +90,46 @@
 <table>
   <tr>
     <td width="306" align="center" valign="top">
-      <a href="https://www.bilibili.com/video/BV1asLK65Ect/"><img src="https://i2.hdslb.com/bfs/archive/16f9b8fd21d59ef96212e910de9ac3c31fbe0785.jpg@308w_174h" alt="编译原理知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://www.bilibili.com/video/BV1asLK65Ect/"><b>编译原理（技术系统原理）</b></a>
+      <a href="https://www.bilibili.com/video/BV1asLK65Ect/"><img src="https://i2.hdslb.com/bfs/archive/16f9b8fd21d59ef96212e910de9ac3c31fbe0785.jpg@308w_174h" alt="编译原理：连接人类逻辑与硅片的精密加工厂" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1asLK65Ect/"><b>编译原理：连接人类逻辑与硅片的精密加工厂</b></a>
       <br><span>解析编译器如何将高级语言翻译为机器码，涵盖词法、语法、语义分析及代码优化全流程。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="欧拉公式知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>欧拉公式（数学）</b></a>
-      <br><span>用动态视图串起指数、三角函数与复数关系。</span>
+      <a href="https://www.bilibili.com/video/BV1ZGLK6pE8D/"><img src="https://i0.hdslb.com/bfs/archive/ea3872859b4f71a3da45a024f67043c7414b6f78.jpg@308w_174h" alt="李清照：千古第一婉约才女，竟是宋朝顶级赌神" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1ZGLK6pE8D/"><b>李清照：千古第一婉约才女，竟是宋朝顶级赌神</b></a>
+      <br><span>李清照：千古第一婉约才女，竟是宋朝顶级赌神。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="冒泡排序知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>冒泡排序（计算机科学）</b></a>
-      <br><span>逐步展示比较、交换和排序收敛的全过程。</span>
+      <a href="https://www.bilibili.com/video/BV1USLN6ME26/"><img src="https://i0.hdslb.com/bfs/archive/81ac671b1d9d20c28852465c12af8ea1105e65ed.jpg@308w_174h" alt="极光会发声？揭秘北极光背后的物理耦合奇迹" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1USLN6ME26/"><b>极光会发声？揭秘北极光背后的物理耦合奇迹</b></a>
+      <br><span>极光声音源于近地面逆温层的电晕放电，而非高空极光本身。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="可供性知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>可供性（设计学）</b></a>
-      <br><span>解释物体如何通过形态暗示用户操作方式。</span>
+      <a href="https://www.bilibili.com/video/BV1mDLN6qEDn/"><img src="https://i2.hdslb.com/bfs/archive/80f3246cf1d1b46090b809e1c1cbb5a4abae9eec.jpg@308w_174h" alt="双缝干涉：微观粒子的波粒二象性" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1mDLN6qEDn/"><b>双缝干涉：微观粒子的波粒二象性</b></a>
+      <br><span>双缝干涉实验揭示微观粒子波粒二象性及观测导致量子态坍缩。</span>
     </td>
   </tr>
   <tr>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="黑洞知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>黑洞（天文学）</b></a>
-      <br><span>从引力、逃逸速度和事件视界理解黑洞。</span>
+      <a href="https://www.bilibili.com/video/BV1taLK6zEcE/"><img src="https://i1.hdslb.com/bfs/archive/013177a30a68c8811b7e98a3388db9d177c6a3d4.jpg@308w_174h" alt="扶手带为何比梯级快" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1taLK6zEcE/"><b>扶手带为何比梯级快</b></a>
+      <br><span>扶手带速度略快以保障安全。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="A* 搜索算法知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>A* 搜索算法（人工智能）</b></a>
-      <br><span>拆解启发式估价如何帮助路径搜索提速。</span>
+      <a href="https://www.bilibili.com/video/BV11dLN6PE6i/"><img src="https://i2.hdslb.com/bfs/archive/1db2b918ed5b110e09feb468c55efaf2d02d88e1.jpg@308w_174h" alt="A*算法：外卖小哥如何精准找到你？" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV11dLN6PE6i/"><b>A*算法：外卖小哥如何精准找到你？</b></a>
+      <br><span>A*算法通过评估实际与预估代价，高效解决城市路网最短路径问题。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="拜占庭将军问题知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>拜占庭将军问题</b></a>
-      <br><span>用协同决策故事解释分布式共识难题。</span>
+      <a href="https://www.bilibili.com/video/BV1cVLY6qExu/"><img src="https://i1.hdslb.com/bfs/archive/e14869e378d3709f2ad0081e700a4cbd49a53d1a.jpg@308w_174h" alt="空调不通风？揭秘内循环真相与换气建议" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1cVLY6qExu/"><b>空调不通风？揭秘内循环真相与换气建议</b></a>
+      <br><span>解析空调内循环原理，澄清无通风功能，建议配合开窗或新风系统保持空气清新。</span>
     </td>
     <td width="306" align="center" valign="top">
-      <a href="https://zda.cnvtn.com"><img src="https://lib.cnvtn.com/zda/index.png" alt="拖延心理学知识视图封面" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
-      <br><a href="https://zda.cnvtn.com"><b>拖延心理学</b></a>
-      <br><span>解释拖延如何制造压力循环和心理负担。</span>
+      <a href="https://www.bilibili.com/video/BV1oGLK6pEoU/"><img src="https://i0.hdslb.com/bfs/archive/80834171ba4707918279118db6b40e81cd958574.jpg@308w_174h" alt="电梯按钮盲文设计原理" width="288" height="162" style="width: 288px; height: 162px; object-fit: cover; border-radius: 8px;" /></a>
+      <br><a href="https://www.bilibili.com/video/BV1oGLK6pEoU/"><b>电梯按钮盲文设计原理</b></a>
+      <br><span>电梯按钮盲文凸起设计原理与标准。</span>
     </td>
   </tr>
 </table>
