@@ -1,27 +1,22 @@
-你是知搭 ZDA 的知识视图脚本生成器。真实生产 prompt 未随公开源码发布。
+Generate complete `TimelineData` code for a Chinese science animation.
 
-请根据用户主题生成 JSON，不要输出 Markdown 围栏。
-要求：
-- 顶层字段包含 final_question 和 scenes。
-- scenes 是数组，至少 6 项。
-- 每个 scene 包含 text 对象，text 内包含 vivid、ext、sub 三个字幕字段。
-- vivid 使用中文短句，ext 使用中文解释，sub 使用英文短句。
-- 游戏模式可额外包含 global_settings.entities，每个实体包含 id 和 clue_info。
+Scene: canvas {{CANVAS_RESOLUTION}}; use math coordinates only. Pick One-Take / Hard Cut / Match Cut per scene; Hard Cut calls `clearScene`. First scheduled item mounts a self-created theme background. All motion needs easing/curves/feedback/stagger. Use concrete domain-specific 2D SVG with gradients/shadows/particles/micro-motion; reject flat generic shapes. {{VISUAL_STYLE_OVERRIDE}}
 
-示例结构：
-{
-  "final_question": "这个主题背后的核心机制是什么？",
-  "scenes": [
-    {"text": {"vivid": "提出问题", "ext": "把主题拆成可以观察的现象。", "sub": "Start with the question."}},
-    {"text": {"vivid": "建立背景", "ext": "说明关键概念和上下文。", "sub": "Build the context."}},
-    {"text": {"vivid": "拆解结构", "ext": "把复杂机制分成几个部分。", "sub": "Break it down."}},
-    {"text": {"vivid": "展示因果", "ext": "说明每一步如何影响下一步。", "sub": "Trace the cause."}},
-    {"text": {"vivid": "连接现实", "ext": "给出容易理解的例子。", "sub": "Connect to reality."}},
-    {"text": {"vivid": "总结答案", "ext": "用一句话收束核心洞察。", "sub": "Close with insight."}}
-  ],
-  "global_settings": {"entities": [{"id": "核心线索", "clue_info": "理解主题所需的关键线索。"}]}
-}
+API: `setCamera(x,y,scale,duration)` x {{MATH_X_RANGE}}, y {{MATH_Y_RANGE}}, scale [0.5,2]; `createElementWithDualLayer(x,y,anim,svg,persist,id)` math coords only; `removeElement`; `clearScene`; `createPath(getPathD(points),stroke,width,class,persist)`; `scheduleAnim`; `mapCoords` uses {{MATH_X_RANGE}}/{{MATH_Y_RANGE}}, {{ORIGIN_DESCRIPTION}} X right, Y up.
 
-用户主题：XXX
-分镜数量不少于 {{scene_count_min}}。
-画布：{{canvas_resolution}}；数学坐标：x={{math_x_range}}，y={{math_y_range}}；原点：{{origin_description}}。
+Fatal SVG: no `<svg>`, `viewBox`, `width`, `height`; root `<g id="[asset]_root">`; defs ids `[asset]_...`; centroid `(0,0)`; rotating pivots `(0,0)` with translate; geometry 100x; stroke >=5; text >=35 and centered; no `document.xxx`.
+
+[Subject & Theme]: XXX
+[Expected Number of Scenes]: N
+
+Output complete code only, no export/TODO:
+const palette = { bg: "[HEX]", primary: "[HEX]", highlight: "[HEX]" }
+const SVG_ASSETS = { ... }
+var TimelineData = [{
+  texts: { vivid: "{{LANGUAGE1}} vivid narration", ext: "{{LANGUAGE1}} professional narration", en: "{{LANGUAGE2}} lines" },
+  onEnter: () => {
+    // Transition strategy method: One-Take / Hard Cut / Match Cut. Reason: ...
+    scheduleAnim([]);
+  }
+}];
+const dynamicCSS = `<style id="dynamic-css">......</style>`;

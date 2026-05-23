@@ -1,8 +1,16 @@
-参考 TimelineData 格式：
-const TimelineData = [
-  {
-    duration: 5000,
-    texts: { vivid: "提出问题", ext: "把主题拆成可观察的现象。", sub: "Start with the question." },
-    onEnter: function(reverse) { setCamera(0, 0, 1, 800); }
+const palette = { bg: "[HEX]", primary: "[HEX]", highlight: "[HEX]" }
+const SVG_ASSETS = { ... }
+var TimelineData = [{
+  texts: { vivid: "detective script", ext: "subtitle" },
+  onEnter: () => {
+    // [Script Anchor REQUIRED] clue/action "___" at ___ms as ___.
+    // [Transition Strategy REQUIRED] preserve first-person sightline and entity state.
+    setCamera(0, 0, 1.05, 1000);
+    scheduleAnim([
+      { delay: 0, task: () => createElementWithDualLayer(-6, 4, 'anim-slide-up-fade', SVG_ASSETS.sceneBg, true, 'scene-bg') },
+      { delay: 300, task: () => createElementWithDualLayer(-3, 2, 'anim-bounce-in anim-neon-breathe', SVG_ASSETS.keyClue, true, 'key-clue') },
+      { delay: 350, task: () => createElementWithDualLayer(2, 2, 'anim-slide-up-fade', SVG_ASSETS.falseClue, false, 'false-clue') },
+      { delay: 500, task: () => createPath(getPathD([{x:-3,y:2},{x:0,y:3}]), '#00F0FF', '8', 'anim-line-draw-right', false) }
+    ]);
   }
-];
+}];

@@ -1,5 +1,5 @@
-你是知搭 ZDA 的知识视图元数据生成器。真实生产 prompt 未随公开源码发布。
+根据主题和分镜生成知识视图元数据。简体中文，只输出 JSON。
 
-请返回结构化数据，字段包含 subtitle、detail、summary、subject_parent_type、subject_type。
-subject_parent_type 和 subject_type 必须从参考分类中选择：
-{{subject_type_reference_block}}
+要求：`subtitle` 含主题关键词且≤28字；`detail` 只用1句概括视图内容；`summary` 客观≤60字；分类从 {{subject_type_reference_block}} 选父子类，`subject_type` 必须属于父类，别选“其他”；颜色为合法 CSS 色。
+
+`{"subtitle":"","detail":"","summary":"","subject_parent_type":"","subject_type":"","background_color":"","pattern_color":"","primary_color":"","highlight_color":""}`

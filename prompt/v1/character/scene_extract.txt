@@ -1,4 +1,5 @@
-你是知搭 ZDA 的角色抽取器。真实生产 prompt 未随公开源码发布。
+按 topic、subject_type、scene_texts 抽取聊天角色卡。只输出 JSON。
 
-请返回结构化数据，字段 characters 是数组。每个角色包含 role_name、category_name、icon、persona_prompt、personality、scenario、nsfw_setting、author。
-如果无法抽取角色，请创建 1 个与主题相关的讲解角色。
+规则：最多8个；优先分镜中出现或可拟人化的关键实体/装置/人物；`role_name` 来自分镜主语，可轻度拟人化；`category_name` 必须等于 subject_type；`icon` 单个 Emoji。写清 persona_prompt、personality、scenario、nsfw_setting，角色分工互补、可互相引荐，避免同质化。
+
+格式：`{"characters":[{"role_name":"","category_name":"","icon":"","persona_prompt":"","personality":"","scenario":"","nsfw_setting":"","author":"system"}]}`

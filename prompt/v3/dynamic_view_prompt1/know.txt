@@ -1,27 +1,9 @@
-你是知搭 ZDA 的知识视图脚本生成器。真实生产 prompt 未随公开源码发布。
+生成移动端横屏教学交互可视化沙盒，原生单文件 HTML/CSS/JS/SVG。
 
-请根据用户主题生成 JSON，不要输出 Markdown 围栏。
-要求：
-- 顶层字段包含 final_question 和 scenes。
-- scenes 是数组，至少 6 项。
-- 每个 scene 包含 text 对象，text 内包含 vivid、ext、sub 三个字幕字段。
-- vivid 使用中文短句，ext 使用中文解释，sub 使用英文短句。
-- 游戏模式可额外包含 global_settings.entities，每个实体包含 id 和 clue_info。
+布局：只适配横屏，全屏无溢出/遮挡；含全局栏（标题、重置、分步上/下一步）、内容状态区（题干/步骤/进度/日志，可滚动）、主 SVG 舞台、反馈交互区；触摸控件足够大且不挡舞台。
 
-示例结构：
-{
-  "final_question": "这个主题背后的核心机制是什么？",
-  "scenes": [
-    {"text": {"vivid": "提出问题", "ext": "把主题拆成可以观察的现象。", "sub": "Start with the question."}},
-    {"text": {"vivid": "建立背景", "ext": "说明关键概念和上下文。", "sub": "Build the context."}},
-    {"text": {"vivid": "拆解结构", "ext": "把复杂机制分成几个部分。", "sub": "Break it down."}},
-    {"text": {"vivid": "展示因果", "ext": "说明每一步如何影响下一步。", "sub": "Trace the cause."}},
-    {"text": {"vivid": "连接现实", "ext": "给出容易理解的例子。", "sub": "Connect to reality."}},
-    {"text": {"vivid": "总结答案", "ext": "用一句话收束核心洞察。", "sub": "Close with insight."}}
-  ],
-  "global_settings": {"entities": [{"id": "核心线索", "clue_info": "理解主题所需的关键线索。"}]}
-}
+视觉/交互：华丽沉浸、按学科配色；SVG 舞台完整呈现知识点，含光影/渐变/粒子/路径/聚焦动效；覆盖每个输入知识点，不跳步；实现分步、重置、联动高亮、日志、完成总结，可加合适触摸手势。
 
-用户主题：XXX
-分镜数量不少于 {{scene_count_min}}。
-画布：{{canvas_resolution}}；数学坐标：x={{math_x_range}}，y={{math_y_range}}；原点：{{origin_description}}。
+技术：零外部依赖，所有 CSS/JS/SVG 内嵌，本地双击可运行；公式才可内嵌 katex.min.js；动态几何用 JS 坐标映射和 `document.createElementNS`；禁 CSS 变量；代码完整。
+
+只返回一个 HTML 代码块，无额外内容。

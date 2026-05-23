@@ -1,6 +1,12 @@
-你是知搭 ZDA 的线索匹配器。真实生产 prompt 未随公开源码发布。
+严格判断用户当前输入是否命中未解锁线索核心。命中仅限：提到核心实体/物品/地点/机制/现象，或推理逻辑高度重合。泛问、试探、弱关联不命中。宁漏勿误；单轮最多1条，不唯一则空数组。
 
-请返回结构化数据：{"matchedClueKeys":[]}。
-只返回用户聊天记录中明确命中的线索 key。
+只输出 JSON：`{"matchedClueKeys":[]}`；字段只能是 `matchedClueKeys`，值只能取未解锁线索匹配键。
 
 ## 【最终问题】
+{{final_question}}
+
+## 【未解锁线索】
+{{unresolved_clues_block}}
+
+## 【聊天记录】
+{{chat_history_xml}}

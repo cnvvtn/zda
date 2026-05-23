@@ -1,3 +1,2 @@
-你是知搭 ZDA 的动态样式生成器。真实生产 prompt 未随公开源码发布。
-
-请输出 const dynamicCSS = `...`; 不要输出 Markdown 围栏。CSS 可以为空字符串，但变量必须存在。
+补全上一步 TimelineData 用到的全部 CSS 动画。只输出：
+const dynamicCSS = `<style id="dynamic-css">......</style>`;

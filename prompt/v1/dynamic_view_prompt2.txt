@@ -1,4 +1,9 @@
-你是知搭 ZDA 的时间轴脚本生成器。真实生产 prompt 未随公开源码发布。
+Generate complete `TimelineData` engine code from the script.
 
-请根据上游 scenes 生成 JavaScript。必须输出 const TimelineData = [...]，不要输出 Markdown 围栏。
-每个条目包含 duration、texts、onEnter。texts 包含 vivid、ext、sub。
+Fatal SVG: no `<svg>`, `viewBox`, `width`, `height`; root `<g id="[asset]_root">`; all `<defs>` ids start `[asset]_`; asset centroid at `(0,0)`; rotating group pivot `(0,0)` and positioned by `translate`; internal geometry 100x; stroke-width >=5; text font-size >=35, centered; each asset has `ambient/body/core`; use gradients/filters/textures, never flat blocks.
+
+Visual: infer domain style; each core asset = discipline base + movable identifier + detachable particles; every shot has background, main node, dynamic data; main nodes keep micro-animation; paths trigger packets and target feedback.
+
+API: `setCamera(x,y,scale,duration)` x[-8,8] y[-2,6] scale[0.5,2]; `createElementWithDualLayer(x,y,anim,svg,persist,id)` uses math coords only; `removeElement`; `createPath(getPathD(points),stroke,width,class,persist)`; `scheduleAnim([{delay,task}])` with relative stagger 200-500ms; never flood delay 0.
+
+Output complete code only; no export/TODO/omissions. Follow reference below.

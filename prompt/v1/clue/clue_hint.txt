@@ -1,1 +1,13 @@
-真实生产 prompt 未随公开源码发布。此文件是公开版可运行占位 prompt。
+结合角色、字幕、聊天记录、目标线索，生成一句聊天 UI toast 的下一步追问方向。角色口吻要有差异，不剧透。只输出文本，无标题/序号/引号/emoji/解释。
+
+【当前选中的交流角色】
+{{selected_role_block}}
+
+【完整中文字幕】
+{{full_chinese_subtitles}}
+
+【聊天记录】
+{{chat_history_xml}}
+
+【当前目标线索】
+{{target_clue_block}}

@@ -1,8 +1,16 @@
-参考 TimelineData 格式：
-const TimelineData = [
-  {
-    duration: 5000,
-    texts: { vivid: "提出问题", ext: "把主题拆成可观察的现象。", sub: "Start with the question." },
-    onEnter: function(reverse) { setCamera(0, 0, 1, 800); }
+const palette = { bg: "[HEX]", primary: "[HEX]", highlight: "[HEX]" }
+const SVG_ASSETS = { ... }
+var TimelineData = [{
+  texts: { vivid: "colloquial script", ext: "professional script", en: "subtitle" },
+  onEnter: () => {
+    // [Script Anchor REQUIRED] verb "___" at ___ms as ___.
+    // [Transition Strategy REQUIRED] One-Take / Hard Cut / Match Cut, because ___.
+    setCamera(0, 0, 1.05, 1000);
+    scheduleAnim([
+      { delay: 0, task: () => createElementWithDualLayer(-6, 4, 'anim-slide-up-fade', SVG_ASSETS.gridBg, true, 'bg') },
+      { delay: 300, task: () => createElementWithDualLayer(-4, 2, 'anim-bounce-in anim-neon-breathe', SVG_ASSETS.mainNode, true, 'main') },
+      { delay: 500, task: () => createPath(getPathD([{x:-4,y:2},{x:3,y:4}]), '#00F0FF', '8', 'anim-line-draw-right', false) },
+      { delay: 300, task: () => createElementWithDualLayer(3, 4, 'anim-heartbeat', SVG_ASSETS.successGlow, false, 'hit') }
+    ]);
   }
-];
+}];
