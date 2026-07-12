@@ -308,4 +308,4 @@ runtime_secrets.ZPAY_KEY: "你的 ZPAY 商户密钥"
 * **🐛 漏洞与建议**：欢迎在 [GitHub Issues](https://www.google.com/search?q=%23) 中提交反馈
 * **💬 开发者社区**：
 
-  <img src="https://lib.cnvtn.com/zda/wxq.jpg" alt="知搭开发者交流群二维码" width="220" />
+  <img src="https://lib.cnvtn.com/zda/wx2.jpg" alt="知搭开发者交流群二维码" width="220" />

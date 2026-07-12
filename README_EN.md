@@ -308,4 +308,4 @@ In this age of information overload, join us in reshaping the form of knowledge.
 * **🐛 Bugs and suggestions**: Feedback is welcome through [GitHub Issues](https://www.google.com/search?q=%23)
 * **💬 Developer community**:
 
-  <img src="assets/images/wechat-group.jpg" alt="ZDA developer community QR code" width="220" />
+  <img src="https://lib.cnvtn.com/zda/wx2.jpg" alt="ZDA developer community QR code" width="220" />
